@@ -1,7 +1,8 @@
 
 
 //Smile we are making pocket tanks
-
+//red: rgb(255, 107, 107)   #ff6b6b
+//blue: rgb(34, 166, 179)   #22a6b3
 
 let c1,c2;
 
@@ -9,7 +10,6 @@ let c1,c2;
 let bullet;
 let g;
 let force, angle;
-let isShot;
 let turn = 0;
 
 let t1, t2;
@@ -18,40 +18,99 @@ function setup(){
     createCanvas(window.innerWidth, window.innerHeight, WEBGL);
     noStroke();
     g = createVector(0,0.2);
+    translate(-width/2, -height/2);
     
-    isShot = false;
     force = 2;
     angle = Math.PI/4
 
-    c1 = new Controller(50,50);
-    c2 = new Controller(width/2 + 50 ,50);
+    bullet = new Bullet();
+    
+    c1 = new Controller(width-220, 50, true);
+    c2 = new Controller(width-220 ,50, false);
 
-    t1 = new Tank(-width/4,200, true, c1);
-    t2 = new Tank(width/4,200, false, c2);
+    
 
+    t1 = new Tank(-280, height/2 - 100, true, c1, true);
+    t2 = new Tank(280, height/2 - 100, false, c2, false);
+
+    //setting up for RED
+    c2.hide();
+    c1.show();
+    document.getElementById("message").innerHTML = "RED'S TURN";
 }
 
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+  }
+
 function draw(){
+    // translate(-width/2, -height/2);
+    // rectMode(CORNER);
+
+  
     background(23, 33, 43);
-   if(isShot){
+   if(bullet.isShot){
     bullet.draw();
     bullet.update();
     bullet.applyForce(g);
    }
 
-//    angle = c1.getAngle();
-//    force = c1.getForce();
+   smooth();
+   //origin
+   circle(0,0,5);
+
+   
    if(turn%2==0){
         t1.setAngle();
         t1.setForce();
+        
    }
    else{
-    t2.setAngle();
-    t2.setForce();
+        t2.setAngle();
+        t2.setForce();
    }
 
-   c1.listenButton();
-   c2.listenButton();
+   t1.collision();
+   t2.collision();
+
+   if(keyIsDown(LEFT_ARROW)){
+       moveLeft();
+   }
+   else if(keyIsDown(RIGHT_ARROW)){
+       moveRight();
+   }
+   else if(keyIsDown(UP_ARROW) || keyIsDown(87)){
+       if(turn%2==0){
+            c1.forceSlider.value(c1.forceSlider.value()+0.1);
+       }
+       else{
+            c2.forceSlider.value(c2.forceSlider.value()+0.1);
+       }
+   }
+   else if(keyIsDown(DOWN_ARROW) || keyIsDown(83)){
+    if(turn%2==0){
+        c1.forceSlider.value(c1.forceSlider.value()-0.1);
+    }
+    else{
+        c2.forceSlider.value(c2.forceSlider.value()-0.1);
+        }
+    }
+    else if(keyIsDown(65)){
+        if(turn%2==0){
+             c1.angleSlider.value(c1.angleSlider.value()+ (Math.PI/180));
+        }
+        else{
+             c2.angleSlider.value(c2.angleSlider.value()+ (Math.PI/180));
+        }
+    }
+    else if(keyIsDown(68)){
+        if(turn%2==0){
+            c1.angleSlider.value(c1.angleSlider.value()- (Math.PI/180));
+        }
+        else{
+         c2.angleSlider.value(c2.angleSlider.value()- (Math.PI/180));
+         }
+    }
 
    t1.draw();
    t1.update();
@@ -59,32 +118,42 @@ function draw(){
    t2.update();
    
 }
+
+function keyPressed(){
+    if(keyCode == 32){
+        play();
+    }
+}
 //draw ends
 
 //Gameplay logic is defined in here
 
-// function play(){
-//     if(turn%2==0){
-//         t1.shoot();
-        
-//     }
-//     else{
-//         t2.shoot();
-        
-//     }
+function play(){
+    if(turn%2==0){
+        t1.shoot();
+        c1.hide();
+        c2.show();
+        document.getElementById("message").innerHTML = "BLUE'S TURN";
+    }
+    else{
+        t2.shoot();
+        c2.hide();
+        c1.show();
+        document.getElementById("message").innerHTML = "RED'S TURN";
+    }
    
-//     turn++;
+    turn++;
     
-// }
+}
 
 function moveLeft(){
     console.log("Left is called");
     if(turn%2==0){
-        t1.moveLeft(10);
+        t1.moveLeft(1);
         
     }
     else{
-        t2.moveLeft(10);
+        t2.moveLeft(1);
         
     }
 }
@@ -92,11 +161,11 @@ function moveLeft(){
 function moveRight(){
     console.log("Right is called");
     if(turn%2==0){
-        t1.moveRight(10);
+        t1.moveRight(1);
         
     }
     else{
-        t2.moveRight(10);
+        t2.moveRight(1);
         
     }
 }

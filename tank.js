@@ -1,11 +1,14 @@
 class Tank{
-    constructor(x,y, isFacingRight, controller){
+    constructor(x,y, isFacingRight, controller, isRed){
         this.pos = createVector(x,y);
         this.vel = createVector(0,0);
         this.isFacingRight = isFacingRight;
         this.angle = angle;
         this.force = force;
         this.controller = controller;
+        this.isRed = isRed;
+        this.hp = 100;
+        this.guides = [4];
     }
 
     setForce(){
@@ -22,10 +25,14 @@ class Tank{
     }
 
     moveLeft(tab){
-        this.vel.x -= tab;
+        if(this.pos.x - 30>=-width/2){
+            this.vel.x -= tab;
+        }
     }
     moveRight(tab){
-        this.vel.x += tab;
+        if(this.pos.x + 30 <=width/2){
+            this.vel.x += tab;
+        }
     }
 
     draw(){
@@ -40,23 +47,53 @@ class Tank{
         //barrel
         push();
         translate(this.pos.x, this.pos.y - 10);
-        fill(0,130,220);
+        if(this.isRed){
+            fill(255, 107, 107);
+        }
+        else{
+            fill(34, 166, 179);
+        }
         rotateZ(-this.angle);
-        
+        push();
+        fill(255);
+        for(let i=0; i<4; i++){
+            circle(40 + 2*this.force*i , 0, 2);
+        }
+        pop();
         rect(0,-4, 40, 8);
+        
         pop();
 
         //turret
+        push();
         fill(220,200,190);
         circle(this.pos.x, this.pos.y-10, 30,);
+        pop();
 
         //treads
         push();
         rectMode(CENTER);
-        fill(0,130,220);
+        if(this.isRed){
+            fill(255, 107, 107);
+        }
+        else{
+            fill(34, 166, 179);
+        }
         rect(this.pos.x, this.pos.y + 13, 50, 10);
         circle(this.pos.x + 27, this.pos.y+13, 10,);
         circle(this.pos.x - 27, this.pos.y+13, 10,);
+        pop();
+
+        //hp
+        push();
+        rectMode(CENTER);
+        rect(this.pos.x, this.pos.y + 40, 100, 10);
+        pop();
+
+        push();
+        rectMode(CORNER);
+        fill(22, 160, 133);
+        rect(this.pos.x-50, this.pos.y + 35, this.hp, 10);
         pop();
     }
 
@@ -70,7 +107,18 @@ class Tank{
         // angle = this.controller.getAngle();
         bullet = new Bullet(this.pos.x + 40 * Math.cos(this.angle), this.pos.y - 10 - 40 * Math.sin(this.angle), this.force, this.angle, this.isFacingRight);
         
-        isShot = true;
+        bullet.isShot = true;
+    }
+
+    collision(){
+        if(bullet.pos.x >= this.pos.x-30 && bullet.pos.x <= this.pos.x+30 && bullet.pos.y>this.pos.y-8 && bullet.pos.y<=this.pos.y+8){
+            if(this.hp-10>=0){
+                this.hp -= 10;
+            }
+            bullet.explode();
+            console.log(this.hp);
+        }
+        
     }
 
 }
