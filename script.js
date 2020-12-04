@@ -6,6 +6,8 @@
 
 let c1,c2;
 
+let ground;
+
 //game elements
 let bullet;
 let g;
@@ -13,6 +15,10 @@ let force, angle;
 let turn = 0;
 
 let t1, t2;
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
 
 function setup(){
     createCanvas(window.innerWidth, window.innerHeight, WEBGL);
@@ -28,10 +34,11 @@ function setup(){
     c1 = new Controller(width-220, 50, true);
     c2 = new Controller(width-220 ,50, false);
 
+    ground = new Ground(200,600);
     
 
-    t1 = new Tank(-280, height/2 - 100, true, c1, true);
-    t2 = new Tank(280, height/2 - 100, false, c2, false);
+    t1 = new Tank(-280, height/2 - 300, true, c1, true);
+    t2 = new Tank(280, height/2 - 300, false, c2, false);   
 
     //setting up for RED
     c2.hide();
@@ -39,13 +46,10 @@ function setup(){
     document.getElementById("message").innerHTML = "RED'S TURN";
 }
 
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-  }
+
+
 
 function draw(){
-    // translate(-width/2, -height/2);
-    // rectMode(CORNER);
 
   
     background(23, 33, 43);
@@ -57,9 +61,12 @@ function draw(){
 
    smooth();
    //origin
-   circle(0,0,5);
+   circle(0,0,2);
 
-   
+   fallOnGround(bullet.pos.x, bullet.pos.y);
+   ground.draw();
+
+
    if(turn%2==0){
         t1.setAngle();
         t1.setForce();
@@ -111,12 +118,17 @@ function draw(){
          c2.angleSlider.value(c2.angleSlider.value()- (Math.PI/180));
          }
     }
-
    t1.draw();
    t1.update();
    t2.draw();
    t2.update();
    
+}
+//draw ends
+
+
+function mouseClicked(){
+    ground.blastOff(mouseX);
 }
 
 function keyPressed(){
@@ -124,9 +136,6 @@ function keyPressed(){
         play();
     }
 }
-//draw ends
-
-//Gameplay logic is defined in here
 
 function play(){
     if(turn%2==0){
@@ -167,6 +176,17 @@ function moveRight(){
     else{
         t2.moveRight(1);
         
+    }
+}
+
+function fallOnGround(x,y){
+    let index = Math.floor(x/ground.w);
+    if(y > ( height/2 - ground.getHeight(index) - 5)&& y < (height/2 - ground.getHeight(index) + 5)){
+        // console.log("Fall");
+        if(!bullet.exploded){
+            ground.blastOff(x+width/2);
+            bullet.explode();
+        }
     }
 }
 

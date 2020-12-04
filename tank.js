@@ -98,6 +98,10 @@ class Tank{
     }
 
     update(){
+        if(this.pos.y + 10 <= height/2-ground.getHeight(this.pos.x)){
+            this.pos.add(this.vel);
+            this.vel.add(g);
+        }
         this.pos.add(this.vel);
         this.vel.mult(0);
     }

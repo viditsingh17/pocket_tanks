@@ -8,6 +8,7 @@ class Bullet{
         this. angle = angle;
         this.force = force;
         this.isShot = false;
+        this.exploded = false;
 
         this.acc.x += this.force*Math.cos(this.angle);
         this.acc.y -= this.force*Math.sin(this.angle);
@@ -28,6 +29,7 @@ class Bullet{
         //the bullet explodes and the bullet object is destroyed.
         //New bullet shouldn't be able to fire unless the prevous bullet has exploded.
         console.log("EXPLODED!");
+        this.exploded = true;
     }
 
     draw(){
