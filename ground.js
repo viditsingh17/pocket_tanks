@@ -12,12 +12,12 @@ class Ground{
 
     getHeight(x){
         let index = Math.floor(x/this.w);
-        return index;
+        return this.ground[index];
     }
     blastOff(x){
 
-        let index = this.getHeight(x);
-        let bh = random(10, 80);
+        let index = Math.floor(x/this.w);
+        let bh = random(30, 80);
         let r = random(1,4);
         for(let i=0;i<this.n;i++){
             if(this.ground[i] + Math.pow((index-i)/2,2)/r - bh < this.ground[i]){

@@ -10,7 +10,9 @@ let ground;
 
 //game elements
 let bullet;
-let g;
+let g;      //g that affects bullets
+let tankG;  //g that affects tanks
+let lift;   //lift that the tank experience
 let force, angle;
 let turn = 0;
 
@@ -23,7 +25,9 @@ function windowResized() {
 function setup(){
     createCanvas(window.innerWidth, window.innerHeight, WEBGL);
     noStroke();
-    g = createVector(0,0.2);
+    g = createVector(0,0.2);        //0.2
+    tankG = createVector(0,10);
+    lift = createVector(0,-0.06);
     translate(-width/2, -height/2);
     
     force = 2;
@@ -76,9 +80,6 @@ function draw(){
         t2.setAngle();
         t2.setForce();
    }
-
-   t1.collision();
-   t2.collision();
 
    if(keyIsDown(LEFT_ARROW)){
        moveLeft();
@@ -180,11 +181,11 @@ function moveRight(){
 }
 
 function fallOnGround(x,y){
-    let index = Math.floor(x/ground.w);
-    if(y > ( height/2 - ground.getHeight(index) - 5)&& y < (height/2 - ground.getHeight(index) + 5)){
-        // console.log("Fall");
+    x = x + width/2;
+    if(y > ( height/2 - ground.getHeight(x) - 5)&& y < (height/2 - ground.getHeight(x) + 5)){
+        console.log("Fall");
         if(!bullet.exploded){
-            ground.blastOff(x+width/2);
+            ground.blastOff(x);
             bullet.explode();
         }
     }

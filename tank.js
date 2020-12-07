@@ -25,13 +25,28 @@ class Tank{
     }
 
     moveLeft(tab){
+        let leftBarHeight = height/2 - ground.getHeight(this.pos.x - 2 + width/2);
         if(this.pos.x - 30>=-width/2){
-            this.vel.x -= tab;
+            if((this.pos.y + 6) <= leftBarHeight)
+                this.vel.x -= tab;
+            else if((this.pos.y + 3) <= leftBarHeight)
+            {
+                this.vel.x -= tab;
+                this.vel.add(lift);
+            }
         }
     }
     moveRight(tab){
+        let rightBarHeight = height/2 - ground.getHeight(this.pos.x + 2  + width/2);
         if(this.pos.x + 30 <=width/2){
-            this.vel.x += tab;
+            if((this.pos.y + 6) <= rightBarHeight){
+                this.vel.x += tab;
+            }
+            else if((this.pos.y + 3) <= rightBarHeight)
+            {
+                this.vel.x += tab;
+                this.vel.add(lift);
+            }
         }
     }
 
@@ -87,6 +102,7 @@ class Tank{
         //hp
         push();
         rectMode(CENTER);
+        fill(225, 10, 50);
         rect(this.pos.x, this.pos.y + 40, 100, 10);
         pop();
 
@@ -98,25 +114,25 @@ class Tank{
     }
 
     update(){
-        if(this.pos.y + 10 <= height/2-ground.getHeight(this.pos.x)){
+        if(this.pos.y + 18 <= height/2 - ground.getHeight(this.pos.x + width/2)){
             this.pos.add(this.vel);
-            this.vel.add(g);
+            this.vel.add(tankG);
         }
         this.pos.add(this.vel);
         this.vel.mult(0);
+        this.collision();
     }
 
     shoot(){
         // force = this.controller.getForce();
         // angle = this.controller.getAngle();
-        bullet = new Bullet(this.pos.x + 40 * Math.cos(this.angle), this.pos.y - 10 - 40 * Math.sin(this.angle), this.force, this.angle, this.isFacingRight);
-        
+        bullet = new Bullet(this.pos.x + 40 * Math.cos(this.angle), this.pos.y - 10 - 40 * Math.sin(this.angle), this.force, this.angle, this.isFacingRight); 
         bullet.isShot = true;
     }
 
     collision(){
         if(bullet.pos.x >= this.pos.x-30 && bullet.pos.x <= this.pos.x+30 && bullet.pos.y>this.pos.y-8 && bullet.pos.y<=this.pos.y+8){
-            if(this.hp-10>=0){
+            if(this.hp-10>=0 && !bullet.exploded){
                 this.hp -= 10;
             }
             bullet.explode();
