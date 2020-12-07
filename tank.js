@@ -118,6 +118,13 @@ class Tank{
             this.pos.add(this.vel);
             this.vel.add(tankG);
         }
+
+        if(this.pos.y+18 >= height/2){
+            if(this.isRed)
+                winner('blue');
+            else
+                winner('red');
+        }
         this.pos.add(this.vel);
         this.vel.mult(0);
         this.collision();
@@ -132,13 +139,31 @@ class Tank{
 
     collision(){
         if(bullet.pos.x >= this.pos.x-30 && bullet.pos.x <= this.pos.x+30 && bullet.pos.y>this.pos.y-8 && bullet.pos.y<=this.pos.y+8){
-            if(this.hp-10>=0 && !bullet.exploded){
-                this.hp -= 10;
+            if(!bullet.exploded){
+                if(this.hp>=20){
+                    this.hp -= 20;
+                }
+                else{
+                    this.hp = 0;
+                }
             }
             bullet.explode();
             console.log(this.hp);
         }
-        
+
+        if(bullet.pos.x >= this.pos.x-15 && bullet.pos.x <= this.pos.x+15 && bullet.pos.y>this.pos.y-15 && bullet.pos.y<=this.pos.y-5){
+            if(!bullet.exploded){
+                //critical hit
+                if(this.hp>=40){
+                    this.hp -= 40;
+                }
+                else{
+                    this.hp = 0;
+                }
+            }
+            bullet.explode();
+            console.log(this.hp);
+        }
     }
 
 }

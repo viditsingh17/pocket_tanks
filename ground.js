@@ -6,7 +6,7 @@ class Ground{
 
         this.ground[0] = initial;
         for(let i=0;i<this.n;i++){
-            this.ground[i] = 100 + Math.sin(i/20) * 5;
+            this.ground[i] = initial + Math.sin(i/20) * 5;
         }
     }
 
@@ -30,7 +30,7 @@ class Ground{
 
         push();
         for(let i=0;i<this.n;i++){
-            fill(80,i/2 + 30,20 + i/2);
+            fill(121,85,72);
             rect(this.w*i-width/2, height/2-this.ground[i], this.w, this.ground[i]);
             // 
         }

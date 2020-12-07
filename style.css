@@ -23,8 +23,12 @@ body{
     margin: auto;
     text-align: center;
 }
-.text{
+p{
     font-size: 12px;
+}
+
+.text{
+    font-size: 14px;
 }
 .message{
     font-size: 1.5em;
@@ -32,4 +36,15 @@ body{
     top: 20%;
     left: 50%;
     transform: translate(-50%,-50%);
+}
+.sub_box{
+    padding: 0.5em 1em;
+    visibility: hidden;
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    border: 1px solid whitesmoke;
+    display: block;
 }

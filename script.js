@@ -34,11 +34,15 @@ function setup(){
     angle = Math.PI/4
 
     bullet = new Bullet();
+    bullet.exploded = true;
     
     c1 = new Controller(width-220, 50, true);
     c2 = new Controller(width-220 ,50, false);
 
     ground = new Ground(200,600);
+    for(let i=0;i<5;i++){
+        ground.blastOff(random(width/2 - 200, width/2 + 200));
+    }
     
 
     t1 = new Tank(-280, height/2 - 300, true, c1, true);
@@ -123,36 +127,56 @@ function draw(){
    t1.update();
    t2.draw();
    t2.update();
+   isGameOver();
    
 }
 //draw ends
 
 
-function mouseClicked(){
-    ground.blastOff(mouseX);
-}
+// function mouseClicked(){
+//     ground.blastOff(mouseX);
+// }
 
 function keyPressed(){
     if(keyCode == 32){
         play();
     }
+    if(keyCode == 72){
+        let ele = document.getElementById('text_matter');
+        if(ele.style.visibility == 'hidden'){
+            ele.style.visibility = 'visible';
+        }
+        else{
+            ele.style.visibility = 'hidden';
+        }
+    }
+    if(keyCode == 82){
+        location.reload();
+    }
 }
 
 function play(){
     if(turn%2==0){
-        t1.shoot();
-        c1.hide();
-        c2.show();
-        document.getElementById("message").innerHTML = "BLUE'S TURN";
+        if(bullet.exploded){
+            t1.shoot();
+            c1.hide();
+            c2.show();
+            document.getElementById("message").innerHTML = "BLUE'S TURN";
+            turn++;
+        }
+        
     }
     else{
+       if(bullet.exploded){
         t2.shoot();
         c2.hide();
         c1.show();
         document.getElementById("message").innerHTML = "RED'S TURN";
+        turn++;
+       }
     }
    
-    turn++;
+    
     
 }
 
@@ -177,6 +201,30 @@ function moveRight(){
     else{
         t2.moveRight(1);
         
+    }
+}
+
+function isGameOver(){
+    if(t1.hp==0){
+        winner('blue');
+        return true;
+    }
+    else if(t2.hp==0){
+        winner('red');
+        return true;
+    }
+    return false;
+}
+
+function winner(str){
+    let ele = document.getElementById("message");
+    ele.style.fontSize = '3em';
+    document.getElementById('sub_message').style.visibility = 'visible';
+    if(str == 'red'){
+        ele.innerHTML = "RED WON!";
+    }
+    else{
+        ele.innerHTML = "BLUE WON!";
     }
 }
 

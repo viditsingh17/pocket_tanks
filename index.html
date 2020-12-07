@@ -8,33 +8,43 @@
     <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
 </head>
 <body>
-    <div class="text_matter">
+    <div class="text_matter" id="text_matter">
         <div class="box title__box">
             <h1 class="title">POCKET TANKS</h1>
         </div>
 
         <div class="box">
-            <p class='text'>
-                <span class="bold">Instructions:</span>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo expedita tempore recusandae sunt qui animi itaque, minus omnis, repellendus temporibus amet voluptatum at illum eum tempora eaque enim id dolor!
-                </p>
+            <p>
+                <span style="font-weight: 800;">Instructions:</span>
+            </p>
+            <p>~Use 'A' and 'D' keys to adjust angle.</p>
+            <p>~Use 'W' and 'S' arrow keys to adjust force.</p>
+            <p>~Use Spacebar to shoot.</p>
+            <p>~Use left and right arrow keys to move.</p>
+            <p>~Press 'R' to restart.</p>
+            <p>~You can obviously use the controller provided on the right.</p>
         </div>
 
         <div class="box">
-            <p>
+            <p class="text">
                 Press 'H' to hide the text.
             </p>
         </div>
 
         <div class="box">
-            <p class="text">Students in today’s day and age face a number of problems which aren’t taken care of. Students don’t know which coaching/tutor to attend so that their time and money don’t get wasted and they get to learn the most. Many books are costly and people don’t want to buy new books as after the session they don’t need them. Either they are given to the juniors or the ragman. Some students make good notes which could be helpful to many others, but due to lack of a sustainable system, they only reach to some. 
-                            Like mentioned above, there are a lot of problems that students face and Rapport is going to be a single mobile app that could solve most of these problems.
-                </p>
+            <p>Hey, I made this simple clone of Pocket tanks to practice coding. It took over a week's time to make it. Hope it is fun.</p>
+            <p>Should I try and add a simple AI to make it single player??</p>
+            <p>
+                <span style="font-weight: 800;">Please try it out in a laptop/pc. It's not optimised for mobile</span>
+            </p>
         </div>
     </div>
    
 
-    <h1 class="message message_box" id="message">MESSAGE</h1>
+    <h1 class="message" id="message">MESSAGE</h1>
+    <div class="sub_box" id="sub_message">
+        <h5 class="subscript" >press 'R' to play again.</h5>
+    </div>
     <!-- <script src="library/matter.js"></script> -->
     <script src="script.js"></script>
     <script src="bullet.js"></script>

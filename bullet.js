@@ -21,8 +21,11 @@ class Bullet{
     update(){
         this.vel.add(this.acc);
         this.pos.add(this.vel);
-        
         this.acc.mult(0);
+
+        if(this.pos.x>width/2 || this.pos.x<-width/2 ||this.pos.y>height/2){
+            this.explode();
+        }
     }
 
     explode(){
@@ -35,7 +38,7 @@ class Bullet{
     draw(){
         push();
         noStroke();
-        fill(220, 50, 100);
+        fill(236,64,122);
         circle(this.pos.x, this.pos.y, 10);
         pop();
     }
